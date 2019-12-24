@@ -2,6 +2,8 @@
         #map {
             background-color: #ffffff
         }
+        .leaflet-control-search .search-tooltip{top:61% !important;}
+        .leaflet-control-search .search-tip{margin:1px !important; border-radius: 0 !important;}
         th {
             text-align: left;
             vertical-align: top;

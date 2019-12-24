@@ -12,17 +12,105 @@
         <link rel="stylesheet" href="css/MarkerCluster.Default.css">
         <link rel="stylesheet" href="css/leaflet-search.css">
         <style>
-        html, body, #map {
-            width: 100%;
-            height: 100%;
-            padding: 0;
-            margin: 0;
-        }
+          html, body {
+              width: 100%;
+              height: 100%;
+              padding: 0;
+              margin: 0;
+          }
+          #map {width: 60%; height: 100%;float: left;}
+          #detailPane{height: 100%; background-color: #f0f0f0; border-left:1px solid #333;  }
+          .top-header{width:100%;}
+          h4{margin:0; float:left;}
+          .group-by{}
+          .group-by select{border: none; background-color: inherit; cursor: pointer;}
+
+          .container {}
+
+          .table {border-collapse: collapse;}
+          .table .row-header {color: #9e9e9e;}
+          .table tr {border-bottom: 1px solid #bdbdbd;}
+          .table tr:last-child {border: 0;}
+          .table td {text-align: right;padding: 1.4rem 1rem;}
+          .table .left {text-align: left;}
+
+          .table-hover > tbody > tr:hover > td,
+          .table-hover > tbody > tr:hover > th {background-color: #fff}
+
+          .table-hover > tbody > tr:hover {box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.12);}
         </style>
-        <title></title>
+
+        <title>Common Operating Map (COM)</title>
     </head>
     <body>
         <div id="map"></div>
+        <div id="detailPane">
+          <div class="top-header">
+            <h4>Showing 9 Prospects in 3 Locations</h4>
+            <div class="group-by">
+              <label><i>Group By</i>: </label>
+              <select>
+                <option value="1">Location</option>
+                <option value="2">X</option>
+                <option value="3">Y</option>
+              </select>
+            </div>
+          </div>
+          <hr>
+          <div class='container'>
+            <table class='table table-hover'>
+              <thead>
+                <tr>
+                  <td class='left row-header'>Rank</td>
+                  <td class='row-header'>Name</td>
+                  <td class='row-header'>#</td>
+                  <td class='row-header'>Position</td>
+                  <td class='row-header'>Year</td>
+                  <td class='row-header'>Notes</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class='left'>1</td>
+                  <td>Player 1</td>
+                  <td>61</td>
+                  <td>OT</td>
+                  <td>Sr</td>
+                  <td>📋</td>
+                </tr>
+                <tr>
+                  <td class='left'>2</td>
+                  <td>Player 2</td>
+                  <td>83</td>
+                  <td>TE</td>
+                  <td>Sr</td>
+                  <td>📋</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        </div>
+
         <script src="js/qgis2web_expressions.js"></script>
         <script src="js/leaflet.js"></script><script src="js/L.Control.Locate.min.js"></script>
         <script src="js/leaflet.rotatedMarker.js"></script>
@@ -153,6 +241,7 @@
             layer: cluster_FBSteams_1,
             initial: false,
             hideMarkerOnCollapse: true,
+            collapsed: false,
             propertyName: 'School'}));
         document.getElementsByClassName('search-button')[0].className +=
          ' fa fa-binoculars';
