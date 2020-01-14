@@ -2,9 +2,10 @@
         #map {
             background-color: #ffffff
         }
-        .leaflet-control-search .search-tooltip{top:61% !important;}
-        .leaflet-control-search .search-tip{margin:1px !important; border-radius: 0 !important;}
-
+        th {
+            text-align: left;
+            vertical-align: top;
+        }
         .info {
             padding: 6px 8px;
             font: 14px/16px Arial, Helvetica, sans-serif;
@@ -32,6 +33,7 @@
         }
         .leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
             border: 0px;
+        }
         }
         .fa, .leaflet-container, a {
             color: #000000 !important;

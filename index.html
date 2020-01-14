@@ -11,14 +11,28 @@
         <link rel="stylesheet" href="css/MarkerCluster.css">
         <link rel="stylesheet" href="css/MarkerCluster.Default.css">
         <link rel="stylesheet" href="css/leaflet-search.css">
-        <style>
-          html, body {width: 100%; height: 100%; padding: 0; margin: 0;}
-          #map {width: 60%; height: 100%;float: left;}
-          #detailPane{height: 100%; width:39%; background-color: #f9f9f9; border-left:1px solid #333; float:left; overflow-x:hidden;overflow-y:scroll; }
-          h4{margin:0;}
-          h5{text-decoration: underline; margin:15px 0 0 0;}
-          select{border: none; background-color: inherit; cursor: pointer;}
-          hr{box-shadow: 0 0px 3px rgba(0, 0, 0, 0.05), 0 0px 1px rgba(0, 0, 0, 0.12);}
+        <style type="text/css">
+          html, body {
+              width: 100%;
+              height: 100%;
+              padding: 0;
+              margin: 0;
+          }
+          #map {
+              width: 100%;
+              height: 500px;
+              padding: 0;
+              margin: 0;
+          }
+          #checkin {
+              width: 50%;
+              height: 500px;
+              padding: 0;
+              margin: 0;
+              float: left;
+              background-color: #f9f9f9;
+          }
+          #detailPane{height: 100%; background-color: #f9f9f9; border-left:1px solid #333; overflow-x:hidden; padding:10px;}
           #detailPane table {border-collapse: collapse; width: 100%;cursor:default; margin-bottom:20px}
           td, th {text-align: left; padding: 8px;}
           th{font-weight: normal;}
@@ -26,13 +40,51 @@
           tr:first-child:hover {background-color: inherit;}
           tr:nth-child(even) {background-color: #eee;}
           tr:hover {background-color: #fff; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.12);}
-        </style>
 
-        <title>Common Operating Map (COM)</title>
+          .leaflet-control-search .search-button{margin-top:1px; position: absolute; left: 186px; top: -124px;}
+          .leaflet-control-search .search-input{position: absolute; width: 150px; left: 45px; top: -124px;}
+          .leaflet-control-search .search-tooltip{top: -109px !important; left: 45px;}
+          .leaflet-control-search .search-tip{margin:1px !important; border-radius: 0 !important; width: 110px;}
+
+          .comment-item, .text-box{padding:10px;}
+          .text-box{border-top:1px solid black;}
+          .text-box textarea {padding:5px;}
+          .scout-name{float:left; font-weight: bold; color: #0078A8; cursor: pointer;}
+          .timestamp{float: right; font-style: italic;}
+          .comment{clear:both;}
+          .scout-name, .timestamp, .comment, #detailPane h4{padding: 0; margin: 0;}
+          input[type="submit"] {float:right; padding:10px;}
+        </style>
+        <title>COP</title>
     </head>
     <body>
         <div id="map"></div>
-
+        <div id="checkin">
+          <div class="comment-item">
+            <p class="scout-name">Anees Merzi</p>
+            <p class="timestamp">Just Now</p>
+            <p class="comment">On the way to SMU from TCU to check out Brad and Zach!</p>
+          </div>
+          <div class="comment-item">
+            <p class="scout-name">Mike Jones</p>
+            <p class="timestamp">30 mins ago</p>
+            <p class="comment">My man Jaye is a beast...💯</p>
+          </div>
+          <div class="comment-item">
+            <p class="scout-name">Robert Lee</p>
+            <p class="timestamp">45 mins ago</p>
+            <p class="comment">Off ✈️ to LAX for 4-days.</p>
+          </div>
+          <div class="comment-item">
+            <p class="scout-name">Anees Merzi</p>
+            <p class="timestamp">2 hrs ago</p>
+            <p class="comment">Leaving DFW to meetup with TCU and checkout Randy.</p>
+          </div>
+          <div class="text-box">
+            <textarea rows="2" cols="46" name="comment">What are you up to?</textarea>
+            <input type="submit" value="Check-in ✔️">
+          </div>
+        </div>
         <div id="detailPane">
           <h4>Showing 9 Prospects in 3 Locations</h4>
           <label><i>Group By</i>: </label>
@@ -162,33 +214,20 @@
         <script src="js/labels.js"></script>
         <script src="js/leaflet.markercluster.js"></script>
         <script src="js/leaflet-search.js"></script>
-        <script src="data/FBSteams_1.js"></script>
+        <script src="data/otherCountries_1.js"></script>
+        <script src="data/FBSteams_2.js"></script>
         <script>
-        var highlightLayer;
-        function highlightFeature(e) {
-            highlightLayer = e.target;
-
-            if (e.target.feature.geometry.type === 'LineString') {
-              highlightLayer.setStyle({
-                color: '#ffff00',
-              });
-            } else {
-              highlightLayer.setStyle({
-                fillColor: '#ffff00',
-                fillOpacity: 1
-              });
-            }
-        }
         var map = L.map('map', {
-            zoomControl:true, maxZoom:28, minZoom:1
-        }).fitBounds([[32.50804512942963,-125.28770130691753],[39.93544193300973,-113.91021958816752]]);
+            zoomControl:true, maxZoom:15, minZoom:4
+        }).fitBounds([[38.5,-125],[38.5,-70]]);
+
         var hash = new L.Hash(map);
         map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
-        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        L.control.locate({locateOptions: {maxZoom: 15}}).addTo(map);
         var bounds_group = new L.featureGroup([]);
         function setBounds() {
         }
-        var layer_CartoDbDarkMatter_0 = L.tileLayer('http://basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png', {
+        var layer_CartoDbPositron_0 = L.tileLayer('http://basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png', {
             opacity: 1.0,
             attribution: '',
             minZoom: 1,
@@ -196,105 +235,80 @@
             minNativeZoom: 0,
             maxNativeZoom: 20
         });
-        layer_CartoDbDarkMatter_0;
-        map.addLayer(layer_CartoDbDarkMatter_0);
-        function pop_FBSteams_1(feature, layer) {
-            layer.on({
-                mouseout: function(e) {
-                    for (i in e.target._eventParents) {
-                        e.target._eventParents[i].resetStyle(e.target);
-                    }
-                },
-                mouseover: highlightFeature,
-            });
-            var popupContent = '<table>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['School'] !== null ? Autolinker.link(String(feature.properties['School'])) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['Location'] !== null ? Autolinker.link(String(feature.properties['Location'])) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['Conference'] !== null ? Autolinker.link(String(feature.properties['Conference'])) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['Latitude'] !== null ? Autolinker.link(String(feature.properties['Latitude'])) : '') + '</td>\
-                    </tr>\
-                    <tr>\
-                        <td colspan="2">' + (feature.properties['Longitude'] !== null ? Autolinker.link(String(feature.properties['Longitude'])) : '') + '</td>\
-                    </tr>\
-                </table>';
-            layer.bindPopup(popupContent, {maxHeight: 400});
-        }
+        layer_CartoDbPositron_0;
+        map.addLayer(layer_CartoDbPositron_0);
 
-        function style_FBSteams_1_0() {
+        function style_otherCountries_1_0() {
             return {
-                pane: 'pane_FBSteams_1',
-        rotationAngle: 0.0,
-        rotationOrigin: 'center center',
-        icon: L.icon({
-            iconUrl: 'markers/red-marker.svg',
-            iconSize: [49.4, 49.4]
-        }),
-                interactive: true,
+                opacity: 1,
+                color: 'rgba(35,35,35,0.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(0,0,0,0.657)',
+                interactive: false,
             }
         }
-        map.createPane('pane_FBSteams_1');
-        map.getPane('pane_FBSteams_1').style.zIndex = 401;
-        map.getPane('pane_FBSteams_1').style['mix-blend-mode'] = 'normal';
-        var layer_FBSteams_1 = new L.geoJson(json_FBSteams_1, {
+        var layer_otherCountries_1 = new L.geoJson(json_otherCountries_1, {
             attribution: '',
-            interactive: true,
-            dataVar: 'json_FBSteams_1',
-            layerName: 'layer_FBSteams_1',
-            pane: 'pane_FBSteams_1',
-            onEachFeature: pop_FBSteams_1,
+            interactive: false,
+            dataVar: 'json_otherCountries_1',
+            layerName: 'layer_otherCountries_1',
+            style: style_otherCountries_1_0,
+        });
+        bounds_group.addLayer(layer_otherCountries_1);
+        map.addLayer(layer_otherCountries_1);
+
+        function style_FBSteams_2_0() {
+            return {
+                pane: 'pane_FBSteams_2',
+                rotationAngle: 0.0,
+                rotationOrigin: 'center center',
+                icon: L.icon({
+                  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png',
+                  iconSize: [10, 14]
+                }),
+                interactive: false,
+            }
+        }
+        map.createPane('pane_FBSteams_2');
+        map.getPane('pane_FBSteams_2').style.zIndex = 402;
+        map.getPane('pane_FBSteams_2').style['mix-blend-mode'] = 'normal';
+        var layer_FBSteams_2 = new L.geoJson(json_FBSteams_2, {
+            attribution: '',
+            interactive: false,
+            dataVar: 'json_FBSteams_2',
+            layerName: 'layer_FBSteams_2',
+            pane: 'pane_FBSteams_2',
             pointToLayer: function (feature, latlng) {
                 var context = {
                     feature: feature,
                     variables: {}
                 };
-                return L.marker(latlng, style_FBSteams_1_0(feature));
+                return L.marker(latlng, style_FBSteams_2_0(feature));
             },
         });
-        var cluster_FBSteams_1 = new L.MarkerClusterGroup({showCoverageOnHover: false,
-            spiderfyDistanceMultiplier: 2});
-        cluster_FBSteams_1.addLayer(layer_FBSteams_1);
+        var cluster_FBSteams_2 = new L.MarkerClusterGroup({showCoverageOnHover: false,
+            spiderfyDistanceMultiplier: 2, maxClusterRadius: 40});
+        cluster_FBSteams_2.addLayer(layer_FBSteams_2);
 
-        bounds_group.addLayer(layer_FBSteams_1);
-        cluster_FBSteams_1.addTo(map);
+        bounds_group.addLayer(layer_FBSteams_2);
+        cluster_FBSteams_2.addTo(map);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png" style="height:15px;" /> Teams': cluster_FBSteams_2,},{position: 'bottomleft',collapsed:false}).addTo(map);
         setBounds();
-        var i = 0;
-        layer_FBSteams_1.eachLayer(function(layer) {
-            var context = {
-                feature: layer.feature,
-                variables: {}
-            };
-            layer.bindTooltip((layer.feature.properties['School'] !== null?String('<div style="color: #f9f9f9; text-transform: uppercase; font-size: 10pt; text-decoration:underline; font-family: \'Segoe UI Black\', sans-serif;">' + layer.feature.properties['School']) + '</div>':''), {permanent: true, offset: [-0, -0], className: 'css_FBSteams_1'});
-            labels.push(layer);
-            totalMarkers += 1;
-              layer.added = true;
-              addLabel(layer, i);
-              i++;
-        });
         map.addControl(new L.Control.Search({
-            layer: cluster_FBSteams_1,
+            layer: cluster_FBSteams_2,
             initial: false,
-            hideMarkerOnCollapse: true,
             collapsed: false,
+            hideMarkerOnCollapse: true,
             propertyName: 'School'}));
         document.getElementsByClassName('search-button')[0].className +=
          ' fa fa-binoculars';
-        resetLabels([layer_FBSteams_1]);
-        map.on("zoomend", function(){
-            resetLabels([layer_FBSteams_1]);
-        });
-        map.on("layeradd", function(){
-            resetLabels([layer_FBSteams_1]);
-        });
-        map.on("layerremove", function(){
-            resetLabels([layer_FBSteams_1]);
-        });
         </script>
+
     </body>
 </html>
